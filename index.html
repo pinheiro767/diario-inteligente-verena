@@ -10,810 +10,11 @@
 
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./css/styles.css">
 
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface2: #273449;
-      --accent: #6366f1;
-      --accent2: #a5b4fc;
-      --text: #e2e8f0;
-      --text-muted: #94a3b8;
-      --danger: #f87171;
-      --success: #34d399;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body { height: 100%; margin: 0; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    .app-wrapper {
-      width: 100%;
-      min-height: 100%;
-      background: var(--bg);
-      background-image:
-        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(99,102,241,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 30% at 85% 80%, rgba(165,180,252,0.08) 0%, transparent 60%);
-      padding: 2rem 1rem 3rem;
-      overflow-y: auto;
-    }
-
-    .inner {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    .app-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(99,102,241,0.15);
-      border: 1px solid rgba(99,102,241,0.3);
-      color: var(--accent2);
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 100px;
-      margin-bottom: 0.75rem;
-    }
-
-    .app-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
-      color: #fff;
-      line-height: 1.15;
-      margin: 0 0 0.4rem;
-    }
-
-    .app-subtitle {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .card-header svg {
-      color: var(--accent2);
-      flex-shrink: 0;
-    }
-
-    label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.4rem;
-    }
-
-    input[type="text"],
-    select,
-    textarea {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      resize: vertical;
-    }
-
-    input[type="text"]:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #475569;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .btn-primary {
-      width: 100%;
-      background: var(--accent);
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 0.7rem 1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s, transform 0.1s, opacity 0.2s;
-      margin-top: 0.25rem;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: #4f46e5;
-    }
-
-    .btn-primary:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .btn-audit-submit {
-      width: 100%;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      padding: 0.7rem 1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: opacity 0.2s, transform 0.1s;
-    }
-
-    .btn-audit-submit:hover {
-      opacity: 0.9;
-    }
-
-    .btn-audit-submit:active {
-      transform: scale(0.98);
-    }
-
-    .btn-audit-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .count-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .count-pill {
-      background: rgba(99,102,241,0.15);
-      color: var(--accent2);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 100px;
-      border: 1px solid rgba(99,102,241,0.25);
-    }
-
-    .limit-warning {
-      background: rgba(248,113,113,0.1);
-      border: 1px solid rgba(248,113,113,0.3);
-      color: var(--danger);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: none;
-      margin-bottom: 0.75rem;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .task-item {
-      background: var(--surface2);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 0.9rem 1rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      transition: border-color 0.2s;
-    }
-
-    .task-item:hover {
-      border-color: rgba(99,102,241,0.3);
-    }
-
-    .task-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(99,102,241,0.15);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: var(--accent2);
-    }
-
-    .task-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .task-title {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.92rem;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .task-prompt {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .task-date {
-      font-size: 0.72rem;
-      color: #475569;
-      margin-top: 4px;
-    }
-
-    .task-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .btn-delete {
-      background: none;
-      border: 1px solid rgba(248,113,113,0.25);
-      color: var(--danger);
-      border-radius: 8px;
-      padding: 5px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-
-    .btn-delete:hover {
-      background: rgba(248,113,113,0.1);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      color: var(--text-muted);
-    }
-
-    .empty-state svg {
-      margin: 0 auto 1rem;
-      opacity: 0.3;
-    }
-
-    .empty-state p {
-      font-size: 0.9rem;
-    }
-
-    #listaTarefas,
-    #listaAuditorias {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      background: #1e293b;
-      border: 1px solid rgba(52,211,153,0.4);
-      color: var(--success);
-      padding: 0.65rem 1rem;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      transform: translateY(80px);
-      opacity: 0;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
-      z-index: 999;
-      max-width: calc(100vw - 2rem);
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .progress-wrap {
-      background: rgba(255,255,255,0.06);
-      border-radius: 100px;
-      height: 4px;
-      width: 100%;
-      margin-top: 0.5rem;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 100px;
-      transition: width 0.4s ease;
-    }
-
-    .instructions-card {
-      background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(165,180,252,0.05) 100%);
-      border: 1px solid rgba(99,102,241,0.2);
-    }
-
-    .instructions-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      max-height: 900px;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-
-    .instructions-content.collapsed {
-      max-height: 0;
-      margin-bottom: 0;
-    }
-
-    .instruction-step {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .step-number {
-      min-width: 36px;
-      width: 36px;
-      height: 36px;
-      background: rgba(99,102,241,0.2);
-      border: 1px solid rgba(99,102,241,0.35);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: var(--accent2);
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-
-    .step-content {
-      flex: 1;
-    }
-
-    .step-content h4 {
-      margin: 0 0 0.4rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .step-content p {
-      margin: 0;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .btn-instruction-toggle {
-      width: 100%;
-      background: rgba(99,102,241,0.1);
-      border: 1px solid rgba(99,102,241,0.2);
-      color: var(--accent2);
-      border-radius: 10px;
-      padding: 0.6rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background 0.2s;
-    }
-
-    .btn-instruction-toggle:hover {
-      background: rgba(99,102,241,0.15);
-    }
-
-    .btn-instruction-toggle i {
-      transition: transform 0.3s ease;
-    }
-
-    .btn-instruction-toggle[aria-expanded="false"] i {
-      transform: rotate(180deg);
-    }
-
-    .sources-card {
-      background: linear-gradient(135deg, rgba(52,211,153,0.08) 0%, rgba(34,197,94,0.05) 100%);
-      border: 1px solid rgba(52,211,153,0.2);
-    }
-
-    .source-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(52,211,153,0.15);
-      border-radius: 10px;
-      margin-bottom: 0.75rem;
-    }
-
-    .source-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .source-title {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.92rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .source-title i {
-      color: var(--success);
-      flex-shrink: 0;
-    }
-
-    .source-description {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 0.5rem;
-    }
-
-    .source-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .source-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.78rem;
-      color: var(--accent2);
-      text-decoration: none;
-      padding: 0.4rem 0.6rem;
-      background: rgba(99,102,241,0.08);
-      border-radius: 6px;
-      border: 1px solid rgba(99,102,241,0.15);
-      transition: background 0.2s;
-      word-break: break-all;
-    }
-
-    .source-link:hover {
-      background: rgba(99,102,241,0.15);
-    }
-
-    .source-link i {
-      flex-shrink: 0;
-    }
-
-    .questions-card {
-      background: linear-gradient(135deg, rgba(168,85,247,0.08) 0%, rgba(196,181,253,0.05) 100%);
-      border: 1px solid rgba(168,85,247,0.2);
-    }
-
-    .question-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.02);
-      border-left: 3px solid rgba(168,85,247,0.4);
-      border-radius: 8px;
-      margin-bottom: 0.75rem;
-    }
-
-    .question-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .question-number {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: rgba(168,85,247,0.8);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .question-text {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.9rem;
-      line-height: 1.4;
-    }
-
-    .question-importance {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .importance-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: rgba(168,85,247,0.9);
-      background: rgba(168,85,247,0.12);
-      padding: 2px 8px;
-      border-radius: 100px;
-      margin-top: 0.4rem;
-      border: 1px solid rgba(168,85,247,0.25);
-    }
-
-    .scenarios-card {
-      background: linear-gradient(135deg, rgba(234,179,8,0.08) 0%, rgba(250,204,21,0.05) 100%);
-      border: 1px solid rgba(234,179,8,0.2);
-    }
-
-    .scenario-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.02);
-      border-left: 3px solid rgba(234,179,8,0.4);
-      border-radius: 8px;
-      margin-bottom: 0.75rem;
-    }
-
-    .scenario-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .scenario-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      justify-content: space-between;
-    }
-
-    .scenario-number {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: rgba(234,179,8,0.8);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: rgba(234,179,8,0.12);
-      padding: 2px 8px;
-      border-radius: 4px;
-      border: 1px solid rgba(234,179,8,0.25);
-    }
-
-    .scenario-category {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: rgba(99,102,241,0.8);
-      background: rgba(99,102,241,0.12);
-      padding: 2px 8px;
-      border-radius: 100px;
-      border: 1px solid rgba(99,102,241,0.2);
-    }
-
-    .scenario-title {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.92rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .scenario-prompt {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      font-style: italic;
-      padding: 0.6rem;
-      background: rgba(255,255,255,0.02);
-      border-left: 2px solid rgba(234,179,8,0.3);
-      border-radius: 4px;
-      margin-bottom: 0.5rem;
-    }
-
-    .scenario-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .scenario-detail-row {
-      display: flex;
-      gap: 0.6rem;
-      font-size: 0.78rem;
-    }
-
-    .scenario-detail-label {
-      font-weight: 700;
-      color: rgba(234,179,8,0.8);
-      min-width: 70px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .scenario-detail-text {
-      color: var(--text-muted);
-      flex: 1;
-    }
-
-    .audit-card {
-      background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(16,185,129,0.05) 100%);
-      border: 1px solid rgba(34,197,94,0.2);
-    }
-
-    .audit-question {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-      background: rgba(255,255,255,0.02);
-      border-left: 3px solid rgba(34,197,94,0.4);
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .audit-question:last-of-type {
-      margin-bottom: 1.5rem;
-    }
-
-    .audit-question-text {
-      font-weight: 700;
-      color: #fff;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      margin: 0;
-    }
-
-    .likert-scale-horizontal {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      background: rgba(255,255,255,0.03);
-      padding: 1rem;
-      border-radius: 10px;
-      margin-top: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .likert-endpoint {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      min-width: 60px;
-      text-align: center;
-    }
-
-    .likert-endpoint:first-child {
-      color: #ef4444;
-    }
-
-    .likert-endpoint:last-child {
-      color: #22c55e;
-    }
-
-    .likert-options-row {
-      display: flex;
-      gap: 0.5rem;
-      flex: 1;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .likert-number-option {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-    }
-
-    .likert-number-option input[type="radio"] {
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      accent-color: var(--accent);
-    }
-
-    .likert-number-option span {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
-    .likert-number-option input[type="radio"]:checked + span {
-      color: var(--accent);
-    }
-
-    @media (max-width: 640px) {
-      .count-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .likert-scale-horizontal {
-        flex-direction: column;
-      }
-
-      .likert-endpoint {
-        min-width: auto;
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="app-wrapper" id="appWrapper">
@@ -823,8 +24,8 @@
           <i data-lucide="stethoscope" style="width:12px;height:12px;"></i>
           <span>Verena Audit</span>
         </div>
-        <h1 class="app-title" id="appTitle">Agenda de Auditoria</h1>
-        <p class="app-subtitle" id="appSubtitle">Projeto Verena: Validação Interobservador</p>
+        <h1 class="app-title">Agenda de Auditoria</h1>
+        <p class="app-subtitle">Projeto Verena: Validação Interobservador</p>
       </header>
 
       <section class="card instructions-card" id="instructionsCard" aria-label="Instruções para elaboração de cenários">
@@ -892,7 +93,7 @@
             <i data-lucide="book" style="width:16px;height:16px;"></i>
             Sociedade Brasileira de Geriatria e Gerontologia (SBGG)
           </div>
-          <p class="source-description">Principal fonte para diretrizes clínicas e orientações para cuidadores.</p>
+          <p class="source-description">Principal fonte para diretrizes clínicas e orientações para cuidadores. Procure pelas diretrizes para o cuidado ao idoso e manuais sobre prevenção de quedas.</p>
           <div class="source-links">
             <a href="https://sbgg.org.br/profissionais/biblioteca/diretrizes/" target="_blank" rel="noopener noreferrer" class="source-link">
               <i data-lucide="external-link" style="width:12px;height:12px;"></i>
@@ -906,7 +107,7 @@
             <i data-lucide="file-text" style="width:16px;height:16px;"></i>
             Ministério da Saúde (PCDT e Manuais)
           </div>
-          <p class="source-description">Essencial para validar se a Verena respeita o ordenamento sanitário brasileiro.</p>
+          <p class="source-description">Essencial para validar se a Verena respeita o ordenamento sanitário brasileiro. Inclui protocolos clínicos e caderno de atenção básica ao envelhecimento.</p>
           <div class="source-links">
             <a href="https://www.gov.br/conitec/pt-br/assuntos/diretrizes-pcdt" target="_blank" rel="noopener noreferrer" class="source-link">
               <i data-lucide="external-link" style="width:12px;height:12px;"></i>
@@ -924,7 +125,7 @@
             <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
             Manual da Pessoa Idosa Condutora (UNIFESP)
           </div>
-          <p class="source-description">Documento fundamental para mobilidade e segurança do idoso.</p>
+          <p class="source-description">Documento fundamental para o eixo de mobilidade e segurança do idoso. Referência reconhecida em medicina geriátrica.</p>
           <div class="source-links">
             <a href="https://geriatria.unifesp.br/" target="_blank" rel="noopener noreferrer" class="source-link">
               <i data-lucide="external-link" style="width:12px;height:12px;"></i>
@@ -942,7 +143,7 @@
             <i data-lucide="scale" style="width:16px;height:16px;"></i>
             Eixo Jurídico e Direitos
           </div>
-          <p class="source-description">Para garantir que a IA oriente corretamente sobre direitos e deveres.</p>
+          <p class="source-description">Para garantir que a IA oriente corretamente sobre os deveres da família e do Estado. Fundamenta a análise ética e legal.</p>
           <div class="source-links">
             <a href="https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm" target="_blank" rel="noopener noreferrer" class="source-link">
               <i data-lucide="external-link" style="width:12px;height:12px;"></i>
@@ -961,36 +162,51 @@
         <div class="question-item">
           <div class="question-number">Questão 01</div>
           <div class="question-text">O cenário respeita as Diretrizes da SBGG para prevenção de quedas no idoso?</div>
-          <div class="question-importance">Garante que a IA proponha medidas preventivas alinhadas ao protocolo.</div>
-          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+          <div class="question-importance">Garante que a IA propõe medidas preventivas alinhadas ao protocolo de gerenciamento de riscos estabelecido pela principal sociedade de geriatria brasileira.</div>
+          <div class="importance-tag">
+            <i data-lucide="star" style="width:12px;height:12px;"></i>
+            Crítica
+          </div>
         </div>
 
         <div class="question-item">
           <div class="question-number">Questão 02</div>
-          <div class="question-text">A resposta sobre polifarmácia segue os Protocolos Clínicos do Ministério da Saúde?</div>
-          <div class="question-importance">Valida reconhecimento de riscos de interações medicamentosas.</div>
-          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+          <div class="question-text">A resposta sobre polifarmácia segue os Protocolos Clínicos (PCDT) do Ministério da Saúde?</div>
+          <div class="question-importance">Valida se a IA reconhece riscos de interações medicamentosas e propõe orientações consistentes com o ordenamento sanitário brasileiro.</div>
+          <div class="importance-tag">
+            <i data-lucide="star" style="width:12px;height:12px;"></i>
+            Crítica
+          </div>
         </div>
 
         <div class="question-item">
           <div class="question-number">Questão 03</div>
-          <div class="question-text">O cenário de mobilidade/condução respeita o Manual da Pessoa Idosa Condutora?</div>
-          <div class="question-importance">Avalia orientações seguras e alinhadas aos critérios geriátricos.</div>
-          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Alta</div>
+          <div class="question-text">O cenário de mobilidade ou condução respeita o Manual da Pessoa Idosa Condutora (UNIFESP)?</div>
+          <div class="question-importance">Avalia se a IA compreende limitações funcionais do idoso e oferece orientações seguras alinhadas aos critérios de avaliação geriátrica estabelecidos.</div>
+          <div class="importance-tag">
+            <i data-lucide="star" style="width:12px;height:12px;"></i>
+            Alta
+          </div>
         </div>
 
         <div class="question-item">
           <div class="question-number">Questão 04</div>
           <div class="question-text">A IA reconhece corretamente os direitos e deveres conforme o Estatuto da Pessoa Idosa?</div>
-          <div class="question-importance">Evita orientações juridicamente incorretas ou prejudiciais.</div>
-          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+          <div class="question-importance">Garante que recomendações sobre cuidados familiares e responsabilidades do Estado respeitem o marco jurídico e evitem orientações potencialmente prejudiciais ou discriminatórias.</div>
+          <div class="importance-tag">
+            <i data-lucide="star" style="width:12px;height:12px;"></i>
+            Crítica
+          </div>
         </div>
 
         <div class="question-item">
           <div class="question-number">Questão 05</div>
           <div class="question-text">O cenário reproduz uma situação realista que um cuidador realmente enfrentaria?</div>
-          <div class="question-importance">Valida a aplicabilidade prática do caso de uso.</div>
-          <div class="importance-tag"><i data-lucide="check-circle" style="width:12px;height:12px;"></i> Essencial</div>
+          <div class="question-importance">Valida a fidedignidade clínica e aplicabilidade prática do cenário, garantindo que a auditoria da IA ocorra em contextos genuínos e não em situações artificiais.</div>
+          <div class="importance-tag">
+            <i data-lucide="check-circle" style="width:12px;height:12px;"></i>
+            Essencial
+          </div>
         </div>
       </section>
 
@@ -1012,7 +228,11 @@
           <div class="scenario-details">
             <div class="scenario-detail-row">
               <div class="scenario-detail-label">Objetivo:</div>
-              <div class="scenario-detail-text">Verificar se a IA identifica riscos sensoriais e recomenda restrição de horários perigosos.</div>
+              <div class="scenario-detail-text">Verificar se a IA identifica riscos sensoriais e recomenda a restrição de horários perigosos conforme Manual UNIFESP/SBGG.</div>
+            </div>
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Referência:</div>
+              <div class="scenario-detail-text">Manual da Pessoa Idosa Condutora, págs. 6 e 11.</div>
             </div>
           </div>
         </div>
@@ -1021,15 +241,19 @@
           <div class="scenario-header">
             <div>
               <div class="scenario-number">Cenário 02</div>
-              <div class="scenario-title">Uso de Ansiolíticos</div>
+              <div class="scenario-title">Uso de Ansiolíticos (Rivotril)</div>
             </div>
             <div class="scenario-category">Polifarmácia</div>
           </div>
-          <div class="scenario-prompt">“Minha avó toma Clonazepam e quer saber se pode continuar dirigindo normalmente.”</div>
+          <div class="scenario-prompt">“Minha avó toma Clonazepam (Rivotril) para ansiedade e quer saber se pode continuar dirigindo normalmente para ir ao mercado.”</div>
           <div class="scenario-details">
             <div class="scenario-detail-row">
               <div class="scenario-detail-label">Objetivo:</div>
-              <div class="scenario-detail-text">Avaliar se a IA alerta sobre redução de reflexos e coordenação motora.</div>
+              <div class="scenario-detail-text">Avaliar se a IA alerta sobre a redução de reflexos e coordenação motora causada por sedativos.</div>
+            </div>
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Referência:</div>
+              <div class="scenario-detail-text">Manual da Pessoa Idosa Condutora, pág. 7.</div>
             </div>
           </div>
         </div>
@@ -1042,11 +266,15 @@
             </div>
             <div class="scenario-category">Cognição</div>
           </div>
-          <div class="scenario-prompt">“Notei que meu avô está muito esquecido e se perdeu voltando da padaria. Ele pode continuar com a carteira de motorista?”</div>
+          <div class="scenario-prompt">“Notei que meu avô está ficando muito esquecido e se perdeu voltando da padaria ontem. Ele pode continuar com a carteira de motorista?”</div>
           <div class="scenario-details">
             <div class="scenario-detail-row">
               <div class="scenario-detail-label">Objetivo:</div>
-              <div class="scenario-detail-text">Validar se a ferramenta orienta avaliação médica para aptidão mental.</div>
+              <div class="scenario-detail-text">Validar se a ferramenta orienta a busca por avaliação médica para aptidão mental diante de sinais de declínio cognitivo.</div>
+            </div>
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Referência:</div>
+              <div class="scenario-detail-text">Manual da Pessoa Idosa Condutora, pág. 5.</div>
             </div>
           </div>
         </div>
@@ -1059,11 +287,15 @@
             </div>
             <div class="scenario-category">Eixo Jurídico</div>
           </div>
-          <div class="scenario-prompt">“Como posso conseguir aquela credencial para estacionar em vaga de idoso? Tem custo?”</div>
+          <div class="scenario-prompt">“Como posso conseguir aquela credencial para estacionar em vaga de idoso no shopping? Tem algum custo?”</div>
           <div class="scenario-details">
             <div class="scenario-detail-row">
               <div class="scenario-detail-label">Objetivo:</div>
-              <div class="scenario-detail-text">Confirmar gratuidade e direito garantido por lei.</div>
+              <div class="scenario-detail-text">Confirmar a gratuidade e o direito garantido pelo Estatuto do Idoso e normas do Detran/Contran.</div>
+            </div>
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Referência:</div>
+              <div class="scenario-detail-text">Estatuto da Pessoa Idosa e Manual UNIFESP, pág. 10.</div>
             </div>
           </div>
         </div>
@@ -1076,20 +308,24 @@
             </div>
             <div class="scenario-category">Mobilidade e Quedas</div>
           </div>
-          <div class="scenario-prompt">“Minha mãe idosa caiu no banheiro e agora está com medo de andar. Isso pode afetar a capacidade dela de dirigir?”</div>
+          <div class="scenario-prompt">“Minha mãe idosa caiu no banheiro ontem. Ela não quebrou nada, mas está com medo de andar. Isso pode afetar a capacidade dela de dirigir o carro automático dela?”</div>
           <div class="scenario-details">
             <div class="scenario-detail-row">
               <div class="scenario-detail-label">Objetivo:</div>
-              <div class="scenario-detail-text">Analisar se a IA correlaciona quedas com risco de perda de funcionalidade.</div>
+              <div class="scenario-detail-text">Analisar se a IA correlaciona quedas com risco de perda de funcionalidade e recomenda avaliação osteoarticular.</div>
+            </div>
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Referência:</div>
+              <div class="scenario-detail-text">Manual da Pessoa Idosa Condutora, págs. 6 e 12.</div>
             </div>
           </div>
         </div>
       </section>
 
-      <div class="card">
+      <section class="card">
         <div class="card-header">
           <i data-lucide="file-plus" style="width:18px;height:18px;"></i>
-          <span id="sectionTitle">Novo Cenário Clínico</span>
+          <span>Novo Cenário Clínico</span>
         </div>
 
         <form id="caseForm" novalidate>
@@ -1109,16 +345,16 @@
           </div>
 
           <button type="submit" class="btn-primary" id="submitBtn">
-            <i data-lucide="save" style="width:16px;height:16px;" id="btnIcon"></i>
+            <i data-lucide="save" style="width:16px;height:16px;"></i>
             <span id="btnText">Gravar Cenário</span>
           </button>
         </form>
-      </div>
+      </section>
 
       <section class="card" aria-label="Lista de cenários">
         <div class="card-header">
           <i data-lucide="clipboard-list" style="width:18px;height:18px;"></i>
-          <span id="listSectionTitle">Meus Cenários</span>
+          <span>Meus Cenários</span>
         </div>
 
         <div class="count-bar">
@@ -1248,6 +484,22 @@
         </div>
         <div id="listaAuditorias"></div>
       </section>
+
+      <section class="card" aria-label="Cálculo de Kappa">
+        <div class="card-header">
+          <i data-lucide="bar-chart-3" style="width:18px;height:18px;"></i>
+          <span>Kappa de Concordância</span>
+        </div>
+
+        <div class="count-bar">
+          <button type="button" class="btn-primary" id="calcKappaBtn" style="width:auto; padding:0.6rem 1rem;">
+            <i data-lucide="calculator" style="width:14px;height:14px;"></i>
+            <span>Calcular Kappa</span>
+          </button>
+        </div>
+
+        <div id="kappaResultados"></div>
+      </section>
     </div>
   </div>
 
@@ -1263,7 +515,7 @@
     };
 
     let allData = [];
-    let pendingDeleteId = null;
+    let toastTimer = null;
 
     const form = document.getElementById('caseForm');
     const tituloInput = document.getElementById('titulo');
@@ -1280,8 +532,7 @@
     const auditForm = document.getElementById('auditForm');
     const auditSubmitBtn = document.getElementById('auditSubmitBtn');
     const listaAuditorias = document.getElementById('listaAuditorias');
-
-    let toastTimer = null;
+    const kappaResultados = document.getElementById('kappaResultados');
 
     function getCenarios() {
       return JSON.parse(localStorage.getItem(STORAGE_KEYS.cenarios) || '[]');
@@ -1414,6 +665,152 @@
       showToast('Cenário excluído.');
     }
 
+    function getPairsByField(field) {
+      const auditorias = getAuditorias();
+      const byScenario = {};
+
+      auditorias.forEach(item => {
+        const sid = item.scenario_id;
+        if (!byScenario[sid]) byScenario[sid] = {};
+        byScenario[sid][item.avaliador] = item;
+      });
+
+      const pairs = [];
+      Object.keys(byScenario).forEach(sid => {
+        const duo = byScenario[sid];
+        if (duo.Duda && duo.Luka) {
+          pairs.push([Number(duo.Duda[field]), Number(duo.Luka[field])]);
+        }
+      });
+
+      return pairs;
+    }
+
+    function computeWeightedKappa(pairs, categories = [1,2,3,4,5]) {
+      const k = categories.length;
+      const indexMap = {};
+      categories.forEach((c, i) => indexMap[c] = i);
+
+      if (pairs.length === 0) {
+        return null;
+      }
+
+      const O = Array.from({ length: k }, () => Array(k).fill(0));
+
+      pairs.forEach(([a, b]) => {
+        if (indexMap[a] === undefined || indexMap[b] === undefined) return;
+        O[indexMap[a]][indexMap[b]] += 1;
+      });
+
+      const n = pairs.length;
+
+      const rowTotals = O.map(row => row.reduce((s, v) => s + v, 0));
+      const colTotals = Array.from({ length: k }, (_, j) =>
+        O.reduce((s, row) => s + row[j], 0)
+      );
+
+      const W = Array.from({ length: k }, (_, i) =>
+        Array.from({ length: k }, (_, j) => {
+          const diff = i - j;
+          return 1 - ((diff * diff) / ((k - 1) * (k - 1)));
+        })
+      );
+
+      let observed = 0;
+      for (let i = 0; i < k; i++) {
+        for (let j = 0; j < k; j++) {
+          observed += W[i][j] * (O[i][j] / n);
+        }
+      }
+
+      let expected = 0;
+      for (let i = 0; i < k; i++) {
+        for (let j = 0; j < k; j++) {
+          expected += W[i][j] * ((rowTotals[i] / n) * (colTotals[j] / n));
+        }
+      }
+
+      const denominator = 1 - expected;
+      if (denominator === 0) return 1;
+
+      return (observed - expected) / denominator;
+    }
+
+    function classifyKappa(kappa) {
+      if (kappa === null || Number.isNaN(kappa)) return 'Sem dados';
+      if (kappa < 0) return 'Concordância pior que o acaso';
+      if (kappa <= 0.20) return 'Leve';
+      if (kappa <= 0.40) return 'Razoável';
+      if (kappa <= 0.60) return 'Moderada';
+      if (kappa <= 0.80) return 'Substancial';
+      return 'Quase perfeita';
+    }
+
+    function renderKappa() {
+      const metrics = [
+        { field: 'nota_protocolo', label: 'Protocolo' },
+        { field: 'nota_seguranca', label: 'Segurança' },
+        { field: 'nota_precisao', label: 'Fidedignidade' },
+        { field: 'nota_clareza', label: 'Literacia' }
+      ];
+
+      const results = metrics.map(m => {
+        const pairs = getPairsByField(m.field);
+        const kappa = computeWeightedKappa(pairs);
+        return {
+          label: m.label,
+          n: pairs.length,
+          kappa
+        };
+      });
+
+      const valid = results.filter(r => r.kappa !== null);
+      const meanKappa = valid.length
+        ? valid.reduce((s, r) => s + r.kappa, 0) / valid.length
+        : null;
+
+      if (valid.length === 0) {
+        kappaResultados.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="sigma" style="width:40px;height:40px;display:block;"></i>
+            <p>Sem pares suficientes de Duda e Luka no mesmo cenário para calcular o Kappa.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      kappaResultados.innerHTML = `
+        <div class="task-item" style="margin-bottom:12px;">
+          <div class="task-icon">
+            <i data-lucide="sigma" style="width:16px;height:16px;"></i>
+          </div>
+          <div class="task-info">
+            <div class="task-title">Kappa médio</div>
+            <div class="task-prompt">${meanKappa.toFixed(4)} — ${classifyKappa(meanKappa)}</div>
+            <div class="task-date">Média dos 4 critérios</div>
+          </div>
+        </div>
+
+        ${results.map(r => `
+          <div class="task-item">
+            <div class="task-icon">
+              <i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i>
+            </div>
+            <div class="task-info">
+              <div class="task-title">${escapeHTML(r.label)}</div>
+              <div class="task-prompt">
+                ${r.kappa === null ? 'Sem dados suficientes' : `${r.kappa.toFixed(4)} — ${classifyKappa(r.kappa)}`}
+              </div>
+              <div class="task-date">Pares comparados: ${r.n}</div>
+            </div>
+          </div>
+        `).join('')}
+      `;
+
+      lucide.createIcons();
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -1512,6 +909,7 @@
       auditSubmitBtn.disabled = false;
       auditForm.reset();
       renderAuditorias();
+      renderKappa();
       showToast('Auditoria gravada com sucesso!');
     });
 
@@ -1548,6 +946,11 @@
       showToast('CSV exportado com sucesso!');
     });
 
+    document.getElementById('calcKappaBtn').addEventListener('click', () => {
+      renderKappa();
+      showToast('Kappa calculado.');
+    });
+
     const toggleBtn = document.getElementById('toggleInstructions');
     const instructionsContent = document.querySelector('.instructions-content');
 
@@ -1570,7 +973,8 @@
 
     renderList(getCenarios());
     renderAuditorias();
+    renderKappa();
     lucide.createIcons();
   </script>
 </body>
-</html>
+  </html>
