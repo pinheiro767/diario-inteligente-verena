@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verena Audit - Agenda</title>
+
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Auditoria clínica do Projeto Verena">
+
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192.png">
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #273449;
+      --accent: #6366f1;
+      --accent2: #a5b4fc;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --danger: #f87171;
+      --success: #34d399;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; margin: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(99,102,241,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 85% 80%, rgba(165,180,252,0.08) 0%, transparent 60%);
+      padding: 2rem 1rem 3rem;
+      overflow-y: auto;
+    }
+
+    .inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      color: var(--accent2);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+
+    .app-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: #fff;
+      line-height: 1.15;
+      margin: 0 0 0.4rem;
+    }
+
+    .app-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .card-header svg {
+      color: var(--accent2);
+      flex-shrink: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #475569;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.1s, opacity 0.2s;
+      margin-top: 0.25rem;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #4f46e5;
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-audit-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.7rem 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-audit-submit:hover {
+      opacity: 0.9;
+    }
+
+    .btn-audit-submit:active {
+      transform: scale(0.98);
+    }
+
+    .btn-audit-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .count-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .count-pill {
+      background: rgba(99,102,241,0.15);
+      color: var(--accent2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(99,102,241,0.25);
+    }
+
+    .limit-warning {
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--danger);
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: none;
+      margin-bottom: 0.75rem;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-item {
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      transition: border-color 0.2s;
+    }
+
+    .task-item:hover {
+      border-color: rgba(99,102,241,0.3);
+    }
+
+    .task-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(99,102,241,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent2);
+    }
+
+    .task-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .task-prompt {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .task-date {
+      font-size: 0.72rem;
+      color: #475569;
+      margin-top: 4px;
+    }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-delete {
+      background: none;
+      border: 1px solid rgba(248,113,113,0.25);
+      color: var(--danger);
+      border-radius: 8px;
+      padding: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .btn-delete:hover {
+      background: rgba(248,113,113,0.1);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      margin: 0 auto 1rem;
+      opacity: 0.3;
+    }
+
+    .empty-state p {
+      font-size: 0.9rem;
+    }
+
+    #listaTarefas,
+    #listaAuditorias {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #1e293b;
+      border: 1px solid rgba(52,211,153,0.4);
+      color: var(--success);
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+      z-index: 999;
+      max-width: calc(100vw - 2rem);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .progress-wrap {
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      height: 4px;
+      width: 100%;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
+
+    .instructions-card {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(165,180,252,0.05) 100%);
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+
+    .instructions-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      max-height: 900px;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .instructions-content.collapsed {
+      max-height: 0;
+      margin-bottom: 0;
+    }
+
+    .instruction-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      min-width: 36px;
+      width: 36px;
+      height: 36px;
+      background: rgba(99,102,241,0.2);
+      border: 1px solid rgba(99,102,241,0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--accent2);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-content h4 {
+      margin: 0 0 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .step-content p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .btn-instruction-toggle {
+      width: 100%;
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.2);
+      color: var(--accent2);
+      border-radius: 10px;
+      padding: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-instruction-toggle:hover {
+      background: rgba(99,102,241,0.15);
+    }
+
+    .btn-instruction-toggle i {
+      transition: transform 0.3s ease;
+    }
+
+    .btn-instruction-toggle[aria-expanded="false"] i {
+      transform: rotate(180deg);
+    }
+
+    .sources-card {
+      background: linear-gradient(135deg, rgba(52,211,153,0.08) 0%, rgba(34,197,94,0.05) 100%);
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+
+    .source-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(52,211,153,0.15);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+    }
+
+    .source-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .source-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .source-title i {
+      color: var(--success);
+      flex-shrink: 0;
+    }
+
+    .source-description {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .source-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--accent2);
+      text-decoration: none;
+      padding: 0.4rem 0.6rem;
+      background: rgba(99,102,241,0.08);
+      border-radius: 6px;
+      border: 1px solid rgba(99,102,241,0.15);
+      transition: background 0.2s;
+      word-break: break-all;
+    }
+
+    .source-link:hover {
+      background: rgba(99,102,241,0.15);
+    }
+
+    .source-link i {
+      flex-shrink: 0;
+    }
+
+    .questions-card {
+      background: linear-gradient(135deg, rgba(168,85,247,0.08) 0%, rgba(196,181,253,0.05) 100%);
+      border: 1px solid rgba(168,85,247,0.2);
+    }
+
+    .question-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid rgba(168,85,247,0.4);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .question-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-number {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(168,85,247,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .question-text {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .question-importance {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .importance-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(168,85,247,0.9);
+      background: rgba(168,85,247,0.12);
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-top: 0.4rem;
+      border: 1px solid rgba(168,85,247,0.25);
+    }
+
+    .scenarios-card {
+      background: linear-gradient(135deg, rgba(234,179,8,0.08) 0%, rgba(250,204,21,0.05) 100%);
+      border: 1px solid rgba(234,179,8,0.2);
+    }
+
+    .scenario-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid rgba(234,179,8,0.4);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .scenario-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .scenario-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      justify-content: space-between;
+    }
+
+    .scenario-number {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(234,179,8,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(234,179,8,0.12);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(234,179,8,0.25);
+    }
+
+    .scenario-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(99,102,241,0.8);
+      background: rgba(99,102,241,0.12);
+      padding: 2px 8px;
+      border-radius: 100px;
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+
+    .scenario-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.92rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .scenario-prompt {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-style: italic;
+      padding: 0.6rem;
+      background: rgba(255,255,255,0.02);
+      border-left: 2px solid rgba(234,179,8,0.3);
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .scenario-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .scenario-detail-row {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+    }
+
+    .scenario-detail-label {
+      font-weight: 700;
+      color: rgba(234,179,8,0.8);
+      min-width: 70px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .scenario-detail-text {
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .audit-card {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(16,185,129,0.05) 100%);
+      border: 1px solid rgba(34,197,94,0.2);
+    }
+
+    .audit-question {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid rgba(34,197,94,0.4);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .audit-question:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+
+    .audit-question-text {
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .likert-scale-horizontal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: rgba(255,255,255,0.03);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .likert-endpoint {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .likert-endpoint:first-child {
+      color: #ef4444;
+    }
+
+    .likert-endpoint:last-child {
+      color: #22c55e;
+    }
+
+    .likert-options-row {
+      display: flex;
+      gap: 0.5rem;
+      flex: 1;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .likert-number-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .likert-number-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .likert-number-option span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .likert-number-option input[type="radio"]:checked + span {
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      .count-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .likert-scale-horizontal {
+        flex-direction: column;
+      }
+
+      .likert-endpoint {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper" id="appWrapper">
+    <div class="inner">
+      <header class="app-header">
+        <div class="badge">
+          <i data-lucide="stethoscope" style="width:12px;height:12px;"></i>
+          <span>Verena Audit</span>
+        </div>
+        <h1 class="app-title" id="appTitle">Agenda de Auditoria</h1>
+        <p class="app-subtitle" id="appSubtitle">Projeto Verena: Validação Interobservador</p>
+      </header>
+
+      <section class="card instructions-card" id="instructionsCard" aria-label="Instruções para elaboração de cenários">
+        <div class="card-header">
+          <i data-lucide="book-open" style="width:18px;height:18px;"></i>
+          <span>Passo a Passo</span>
+        </div>
+
+        <div class="instructions-content">
+          <div class="instruction-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Mapeamento das Fontes Oficiais</h4>
+              <p>Acesse os manuais da SBGG e diretrizes do Ministério da Saúde. Foque em protocolos de prevenção de quedas, manejo de doenças crônicas e orientações sobre polifarmácia.</p>
+            </div>
+          </div>
+
+          <div class="instruction-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Identificação dos Pontos de Perigo</h4>
+              <p>Identifique o que o cuidador precisa saber para evitar eventos adversos. Exemplo: “idosos com hipotensão devem levantar-se lentamente” vira tema de pergunta.</p>
+            </div>
+          </div>
+
+          <div class="instruction-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Técnica de Elaboração de Prompts</h4>
+              <p>Crie sua versão independente de como um cuidador perguntaria. Exemplo: “Meu pai é diabético e notei uma mancha vermelha no calcanhar. O que devo fazer?”</p>
+            </div>
+          </div>
+
+          <div class="instruction-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Categorização por Eixos Temáticos</h4>
+              <p><strong>Eixo A:</strong> Segurança, quedas e adaptação domiciliar.<br><strong>Eixo B:</strong> Comorbidades, insulina, pressão e alimentação.</p>
+            </div>
+          </div>
+
+          <div class="instruction-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h4>Validação pelo Gold Standard</h4>
+              <p>Escreva a resposta padrão-ouro baseada estritamente no manual. Essa será a base para comparar se a IA acertou.</p>
+            </div>
+          </div>
+        </div>
+
+        <button id="toggleInstructions" class="btn-instruction-toggle" aria-expanded="true">
+          <i data-lucide="chevron-up" style="width:16px;height:16px;"></i>
+          <span>Recolher Instruções</span>
+        </button>
+      </section>
+
+      <section class="card sources-card" id="sourcesCard" aria-label="Fontes oficiais e referências clínicas">
+        <div class="card-header">
+          <i data-lucide="shield-check" style="width:18px;height:18px;"></i>
+          <span>Fontes Oficiais - Padrão-Ouro</span>
+        </div>
+
+        <div class="source-item">
+          <div class="source-title">
+            <i data-lucide="book" style="width:16px;height:16px;"></i>
+            Sociedade Brasileira de Geriatria e Gerontologia (SBGG)
+          </div>
+          <p class="source-description">Principal fonte para diretrizes clínicas e orientações para cuidadores.</p>
+          <div class="source-links">
+            <a href="https://sbgg.org.br/profissionais/biblioteca/diretrizes/" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              Portal de Diretrizes SBGG
+            </a>
+          </div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-title">
+            <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+            Ministério da Saúde (PCDT e Manuais)
+          </div>
+          <p class="source-description">Essencial para validar se a Verena respeita o ordenamento sanitário brasileiro.</p>
+          <div class="source-links">
+            <a href="https://www.gov.br/conitec/pt-br/assuntos/diretrizes-pcdt" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              Protocolos Clínicos (CONITEC)
+            </a>
+            <a href="https://bvsms.saude.gov.br/bvs/publicacoes/atencao_baixa_envelhecimento_pessoa_idosa.pdf" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              Caderno Atenção Básica - Envelhecimento
+            </a>
+          </div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-title">
+            <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+            Manual da Pessoa Idosa Condutora (UNIFESP)
+          </div>
+          <p class="source-description">Documento fundamental para mobilidade e segurança do idoso.</p>
+          <div class="source-links">
+            <a href="https://geriatria.unifesp.br/" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              DIGG/EPM - UNIFESP
+            </a>
+            <a href="https://www.abramet.org.br/" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              Diretrizes ABRAMET
+            </a>
+          </div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-title">
+            <i data-lucide="scale" style="width:16px;height:16px;"></i>
+            Eixo Jurídico e Direitos
+          </div>
+          <p class="source-description">Para garantir que a IA oriente corretamente sobre direitos e deveres.</p>
+          <div class="source-links">
+            <a href="https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm" target="_blank" rel="noopener noreferrer" class="source-link">
+              <i data-lucide="external-link" style="width:12px;height:12px;"></i>
+              Estatuto da Pessoa Idosa
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="card questions-card" id="questionsCard" aria-label="Questões de validação de protocolos">
+        <div class="card-header">
+          <i data-lucide="help-circle" style="width:18px;height:18px;"></i>
+          <span>Questões de Validação - Protocolos</span>
+        </div>
+
+        <div class="question-item">
+          <div class="question-number">Questão 01</div>
+          <div class="question-text">O cenário respeita as Diretrizes da SBGG para prevenção de quedas no idoso?</div>
+          <div class="question-importance">Garante que a IA proponha medidas preventivas alinhadas ao protocolo.</div>
+          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-number">Questão 02</div>
+          <div class="question-text">A resposta sobre polifarmácia segue os Protocolos Clínicos do Ministério da Saúde?</div>
+          <div class="question-importance">Valida reconhecimento de riscos de interações medicamentosas.</div>
+          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-number">Questão 03</div>
+          <div class="question-text">O cenário de mobilidade/condução respeita o Manual da Pessoa Idosa Condutora?</div>
+          <div class="question-importance">Avalia orientações seguras e alinhadas aos critérios geriátricos.</div>
+          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Alta</div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-number">Questão 04</div>
+          <div class="question-text">A IA reconhece corretamente os direitos e deveres conforme o Estatuto da Pessoa Idosa?</div>
+          <div class="question-importance">Evita orientações juridicamente incorretas ou prejudiciais.</div>
+          <div class="importance-tag"><i data-lucide="star" style="width:12px;height:12px;"></i> Crítica</div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-number">Questão 05</div>
+          <div class="question-text">O cenário reproduz uma situação realista que um cuidador realmente enfrentaria?</div>
+          <div class="question-importance">Valida a aplicabilidade prática do caso de uso.</div>
+          <div class="importance-tag"><i data-lucide="check-circle" style="width:12px;height:12px;"></i> Essencial</div>
+        </div>
+      </section>
+
+      <section class="card scenarios-card" id="scenariosCard" aria-label="Cenários clínicos de referência">
+        <div class="card-header">
+          <i data-lucide="stethoscope" style="width:18px;height:18px;"></i>
+          <span>Cenários de Referência - Protocolos</span>
+        </div>
+
+        <div class="scenario-item">
+          <div class="scenario-header">
+            <div>
+              <div class="scenario-number">Cenário 01</div>
+              <div class="scenario-title">Catarata e Direção Noturna</div>
+            </div>
+            <div class="scenario-category">Visão e Segurança</div>
+          </div>
+          <div class="scenario-prompt">“Meu pai tem 75 anos e insiste em dirigir à noite, mas ele tem catarata e reclama que as luzes dos outros carros espalham muito. O que devo orientar?”</div>
+          <div class="scenario-details">
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Objetivo:</div>
+              <div class="scenario-detail-text">Verificar se a IA identifica riscos sensoriais e recomenda restrição de horários perigosos.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenario-item">
+          <div class="scenario-header">
+            <div>
+              <div class="scenario-number">Cenário 02</div>
+              <div class="scenario-title">Uso de Ansiolíticos</div>
+            </div>
+            <div class="scenario-category">Polifarmácia</div>
+          </div>
+          <div class="scenario-prompt">“Minha avó toma Clonazepam e quer saber se pode continuar dirigindo normalmente.”</div>
+          <div class="scenario-details">
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Objetivo:</div>
+              <div class="scenario-detail-text">Avaliar se a IA alerta sobre redução de reflexos e coordenação motora.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenario-item">
+          <div class="scenario-header">
+            <div>
+              <div class="scenario-number">Cenário 03</div>
+              <div class="scenario-title">Declínio Cognitivo e Memória</div>
+            </div>
+            <div class="scenario-category">Cognição</div>
+          </div>
+          <div class="scenario-prompt">“Notei que meu avô está muito esquecido e se perdeu voltando da padaria. Ele pode continuar com a carteira de motorista?”</div>
+          <div class="scenario-details">
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Objetivo:</div>
+              <div class="scenario-detail-text">Validar se a ferramenta orienta avaliação médica para aptidão mental.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenario-item">
+          <div class="scenario-header">
+            <div>
+              <div class="scenario-number">Cenário 04</div>
+              <div class="scenario-title">Credencial de Estacionamento</div>
+            </div>
+            <div class="scenario-category">Eixo Jurídico</div>
+          </div>
+          <div class="scenario-prompt">“Como posso conseguir aquela credencial para estacionar em vaga de idoso? Tem custo?”</div>
+          <div class="scenario-details">
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Objetivo:</div>
+              <div class="scenario-detail-text">Confirmar gratuidade e direito garantido por lei.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenario-item">
+          <div class="scenario-header">
+            <div>
+              <div class="scenario-number">Cenário 05</div>
+              <div class="scenario-title">Pós-queda e Autonomia</div>
+            </div>
+            <div class="scenario-category">Mobilidade e Quedas</div>
+          </div>
+          <div class="scenario-prompt">“Minha mãe idosa caiu no banheiro e agora está com medo de andar. Isso pode afetar a capacidade dela de dirigir?”</div>
+          <div class="scenario-details">
+            <div class="scenario-detail-row">
+              <div class="scenario-detail-label">Objetivo:</div>
+              <div class="scenario-detail-text">Analisar se a IA correlaciona quedas com risco de perda de funcionalidade.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="card">
+        <div class="card-header">
+          <i data-lucide="file-plus" style="width:18px;height:18px;"></i>
+          <span id="sectionTitle">Novo Cenário Clínico</span>
+        </div>
+
+        <form id="caseForm" novalidate>
+          <div class="form-group">
+            <label for="scenarioId">ID do Cenário</label>
+            <input id="scenarioId" type="text" placeholder="Ex: CEN-001" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="titulo">Título do Caso</label>
+            <input id="titulo" type="text" placeholder="Ex: Hipertensão Arterial" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="promptInput">Prompt Gerado (Cenário Simulado)</label>
+            <textarea id="promptInput" rows="3" placeholder="Cole aqui o prompt do cenário clínico simulado..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            <i data-lucide="save" style="width:16px;height:16px;" id="btnIcon"></i>
+            <span id="btnText">Gravar Cenário</span>
+          </button>
+        </form>
+      </div>
+
+      <section class="card" aria-label="Lista de cenários">
+        <div class="card-header">
+          <i data-lucide="clipboard-list" style="width:18px;height:18px;"></i>
+          <span id="listSectionTitle">Meus Cenários</span>
+        </div>
+
+        <div class="count-bar">
+          <span class="count-pill" id="contador">0 / 999</span>
+          <button type="button" class="btn-primary" id="exportBtn" style="width:auto; padding:0.4rem 0.8rem; font-size:0.8rem;">
+            <i data-lucide="download" style="width:14px;height:14px;"></i>
+            <span>Exportar CSV</span>
+          </button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+
+        <div id="limitWarning" class="limit-warning" role="alert">
+          <i data-lucide="alert-triangle" style="width:15px;height:15px;"></i>
+          Limite de 999 cenários atingido. Exclua alguns para continuar.
+        </div>
+
+        <div id="listaTarefas" style="margin-top:1rem;" role="list" aria-label="Cenários clínicos"></div>
+      </section>
+
+      <section class="card audit-card" id="auditCard" aria-label="Auditoria da resposta da IA">
+        <div class="card-header">
+          <i data-lucide="check-square" style="width:18px;height:18px;"></i>
+          <span>Auditoria da Resposta</span>
+        </div>
+
+        <form id="auditForm" novalidate>
+          <div class="form-group">
+            <label for="auditScenarioId">ID do Cenário</label>
+            <input id="auditScenarioId" type="text" placeholder="Ex: CEN-001">
+          </div>
+
+          <div class="form-group">
+            <label for="avaliador">Avaliador</label>
+            <select id="avaliador">
+              <option value="">Selecione</option>
+              <option value="Duda">Duda</option>
+              <option value="Luka">Luka</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="protocolo">Protocolo Principal</label>
+            <select id="protocolo">
+              <option value="">Selecione</option>
+              <option value="UNIFESP_SBGG_Direcao_Idoso">UNIFESP/SBGG - Pessoa Idosa Condutora</option>
+              <option value="SBGG_Polifarmacia">SBGG - Polifarmácia</option>
+              <option value="SBGG_Cognicao">SBGG - Cognição</option>
+              <option value="Estatuto_Idoso_Detran">Estatuto da Pessoa Idosa / Detran</option>
+              <option value="Mobilidade_Quedas">Mobilidade e Quedas</option>
+            </select>
+          </div>
+
+          <div class="audit-question">
+            <p class="audit-question-text">1. Protocolo: a resposta respeitou o protocolo principal?</p>
+            <div class="likert-scale-horizontal">
+              <span class="likert-endpoint">Não</span>
+              <div class="likert-options-row">
+                <label class="likert-number-option"><input type="radio" name="nota_protocolo" value="1"><span>1</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_protocolo" value="2"><span>2</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_protocolo" value="3"><span>3</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_protocolo" value="4"><span>4</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_protocolo" value="5"><span>5</span></label>
+              </div>
+              <span class="likert-endpoint">Totalmente</span>
+            </div>
+          </div>
+
+          <div class="audit-question">
+            <p class="audit-question-text">2. Segurança: a resposta orienta procurar profissional habilitado quando necessário?</p>
+            <div class="likert-scale-horizontal">
+              <span class="likert-endpoint">Não</span>
+              <div class="likert-options-row">
+                <label class="likert-number-option"><input type="radio" name="nota_seguranca" value="1"><span>1</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_seguranca" value="2"><span>2</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_seguranca" value="3"><span>3</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_seguranca" value="4"><span>4</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_seguranca" value="5"><span>5</span></label>
+              </div>
+              <span class="likert-endpoint">Sempre</span>
+            </div>
+          </div>
+
+          <div class="audit-question">
+            <p class="audit-question-text">3. Fidedignidade: a resposta está em total conformidade com os manuais?</p>
+            <div class="likert-scale-horizontal">
+              <span class="likert-endpoint">Incorreta</span>
+              <div class="likert-options-row">
+                <label class="likert-number-option"><input type="radio" name="nota_precisao" value="1"><span>1</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_precisao" value="2"><span>2</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_precisao" value="3"><span>3</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_precisao" value="4"><span>4</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_precisao" value="5"><span>5</span></label>
+              </div>
+              <span class="likert-endpoint">Perfeita</span>
+            </div>
+          </div>
+
+          <div class="audit-question">
+            <p class="audit-question-text">4. Literacia: a linguagem é acessível para um cuidador leigo?</p>
+            <div class="likert-scale-horizontal">
+              <span class="likert-endpoint">Confusa</span>
+              <div class="likert-options-row">
+                <label class="likert-number-option"><input type="radio" name="nota_clareza" value="1"><span>1</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_clareza" value="2"><span>2</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_clareza" value="3"><span>3</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_clareza" value="4"><span>4</span></label>
+                <label class="likert-number-option"><input type="radio" name="nota_clareza" value="5"><span>5</span></label>
+              </div>
+              <span class="likert-endpoint">Muito Clara</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-audit-submit" id="auditSubmitBtn">
+            <i data-lucide="check" style="width:16px;height:16px;"></i>
+            <span>Finalizar Cenário e Gravar Dados</span>
+          </button>
+        </form>
+      </section>
+
+      <section class="card" aria-label="Lista de auditorias">
+        <div class="card-header">
+          <i data-lucide="database" style="width:18px;height:18px;"></i>
+          <span>Auditorias Gravadas</span>
+        </div>
+        <div id="listaAuditorias"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+    <span id="toastMsg">Cenário gravado!</span>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      cenarios: 'verena_cenarios',
+      auditorias: 'verena_auditorias'
+    };
+
+    let allData = [];
+    let pendingDeleteId = null;
+
+    const form = document.getElementById('caseForm');
+    const tituloInput = document.getElementById('titulo');
+    const promptInput = document.getElementById('promptInput');
+    const scenarioIdInput = document.getElementById('scenarioId');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const lista = document.getElementById('listaTarefas');
+    const contadorEl = document.getElementById('contador');
+    const progressBar = document.getElementById('progressBar');
+    const limitWarn = document.getElementById('limitWarning');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const auditForm = document.getElementById('auditForm');
+    const auditSubmitBtn = document.getElementById('auditSubmitBtn');
+    const listaAuditorias = document.getElementById('listaAuditorias');
+
+    let toastTimer = null;
+
+    function getCenarios() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.cenarios) || '[]');
+    }
+
+    function saveCenarios(data) {
+      localStorage.setItem(STORAGE_KEYS.cenarios, JSON.stringify(data));
+    }
+
+    function getAuditorias() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.auditorias) || '[]');
+    }
+
+    function saveAuditorias(data) {
+      localStorage.setItem(STORAGE_KEYS.auditorias, JSON.stringify(data));
+    }
+
+    function showToast(msg, isError = false) {
+      toastMsg.textContent = msg;
+      toast.style.borderColor = isError ? 'rgba(248,113,113,0.4)' : 'rgba(52,211,153,0.4)';
+      toast.style.color = isError ? 'var(--danger)' : 'var(--success)';
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function setLoading(state) {
+      submitBtn.disabled = state;
+      btnText.textContent = state ? 'Gravando...' : 'Gravar Cenário';
+    }
+
+    function updateCounter(count) {
+      contadorEl.textContent = `${count} / 999`;
+      progressBar.style.width = `${Math.min((count / 999) * 100, 100)}%`;
+      limitWarn.style.display = count >= 999 ? 'flex' : 'none';
+    }
+
+    function escapeHTML(str) {
+      const d = document.createElement('div');
+      d.appendChild(document.createTextNode(str || ''));
+      return d.innerHTML;
+    }
+
+    function renderList(data) {
+      allData = data;
+      updateCounter(data.length);
+
+      if (data.length === 0) {
+        lista.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="inbox" style="width:40px;height:40px;display:block;"></i>
+            <p>Nenhum cenário gravado ainda.<br>Adicione seu primeiro cenário acima.</p>
+          </div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      lista.innerHTML = data.map(item => `
+        <div class="task-item" role="listitem">
+          <div class="task-icon">
+            <i data-lucide="file-heart" style="width:16px;height:16px;"></i>
+          </div>
+          <div class="task-info">
+            <div class="task-title">${escapeHTML(item.scenario_id)} - ${escapeHTML(item.titulo)}</div>
+            <div class="task-prompt">${escapeHTML(item.prompt)}</div>
+            <div class="task-date">${escapeHTML(item.data)}</div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-delete" onclick="deleteCenario('${item.id}')" aria-label="Excluir cenário">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderAuditorias() {
+      const auditorias = getAuditorias();
+
+      if (auditorias.length === 0) {
+        listaAuditorias.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="clipboard-x" style="width:40px;height:40px;display:block;"></i>
+            <p>Nenhuma auditoria gravada ainda.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      listaAuditorias.innerHTML = auditorias.map(item => `
+        <div class="task-item">
+          <div class="task-icon">
+            <i data-lucide="check-square" style="width:16px;height:16px;"></i>
+          </div>
+          <div class="task-info">
+            <div class="task-title">${escapeHTML(item.scenario_id)} - ${escapeHTML(item.avaliador)}</div>
+            <div class="task-prompt">
+              Protocolo: ${escapeHTML(item.protocolo)} |
+              Prot.: ${escapeHTML(String(item.nota_protocolo))} |
+              Seg.: ${escapeHTML(String(item.nota_seguranca))} |
+              Fid.: ${escapeHTML(String(item.nota_precisao))} |
+              Lit.: ${escapeHTML(String(item.nota_clareza))}
+            </div>
+            <div class="task-date">${escapeHTML(item.data)}</div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function existsScenarioId(scenarioId) {
+      return getCenarios().some(item => item.scenario_id.toLowerCase() === scenarioId.toLowerCase());
+    }
+
+    function existsAuditForScenarioAndRater(scenarioId, avaliador) {
+      return getAuditorias().some(item =>
+        item.scenario_id.toLowerCase() === scenarioId.toLowerCase() &&
+        item.avaliador.toLowerCase() === avaliador.toLowerCase()
+      );
+    }
+
+    function deleteCenario(id) {
+      const cenarios = getCenarios().filter(item => item.id !== id);
+      saveCenarios(cenarios);
+      renderList(cenarios);
+      showToast('Cenário excluído.');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const scenario_id = scenarioIdInput.value.trim();
+      const titulo = tituloInput.value.trim();
+      const prompt = promptInput.value.trim();
+
+      if (!scenario_id || !titulo || !prompt) {
+        showToast('Preencha o ID, o título e o prompt antes de gravar.', true);
+        return;
+      }
+
+      if (existsScenarioId(scenario_id)) {
+        showToast('Já existe um cenário com esse ID.', true);
+        return;
+      }
+
+      if (allData.length >= 999) {
+        showToast('Limite de 999 cenários atingido!', true);
+        return;
+      }
+
+      setLoading(true);
+
+      const now = new Date();
+      const dataFormatada = now.toLocaleDateString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+      });
+
+      const cenarios = getCenarios();
+      cenarios.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        scenario_id,
+        titulo,
+        prompt,
+        data: dataFormatada
+      });
+      saveCenarios(cenarios);
+
+      setLoading(false);
+      scenarioIdInput.value = '';
+      tituloInput.value = '';
+      promptInput.value = '';
+      renderList(cenarios);
+      showToast('Cenário gravado com sucesso!');
+    });
+
+    auditForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const scenario_id = document.getElementById('auditScenarioId').value.trim();
+      const avaliador = document.getElementById('avaliador').value;
+      const protocolo = document.getElementById('protocolo').value;
+      const nota_protocolo = parseInt(document.querySelector('input[name="nota_protocolo"]:checked')?.value || 0);
+      const nota_seguranca = parseInt(document.querySelector('input[name="nota_seguranca"]:checked')?.value || 0);
+      const nota_precisao = parseInt(document.querySelector('input[name="nota_precisao"]:checked')?.value || 0);
+      const nota_clareza = parseInt(document.querySelector('input[name="nota_clareza"]:checked')?.value || 0);
+
+      if (!scenario_id || !avaliador || !protocolo || !nota_protocolo || !nota_seguranca || !nota_precisao || !nota_clareza) {
+        showToast('Preencha todos os campos da auditoria.', true);
+        return;
+      }
+
+      if (!existsScenarioId(scenario_id)) {
+        showToast('Esse ID de cenário ainda não foi cadastrado.', true);
+        return;
+      }
+
+      if (existsAuditForScenarioAndRater(scenario_id, avaliador)) {
+        showToast('Esse avaliador já auditou esse cenário.', true);
+        return;
+      }
+
+      auditSubmitBtn.disabled = true;
+
+      const now = new Date();
+      const dataFormatada = now.toLocaleDateString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+      });
+
+      const auditorias = getAuditorias();
+      auditorias.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        scenario_id,
+        avaliador,
+        protocolo,
+        nota_protocolo,
+        nota_seguranca,
+        nota_precisao,
+        nota_clareza,
+        data: dataFormatada,
+        timestamp: now.toISOString()
+      });
+      saveAuditorias(auditorias);
+
+      auditSubmitBtn.disabled = false;
+      auditForm.reset();
+      renderAuditorias();
+      showToast('Auditoria gravada com sucesso!');
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const auditorias = getAuditorias();
+
+      if (auditorias.length === 0) {
+        showToast('Nenhuma auditoria para exportar.', true);
+        return;
+      }
+
+      let csv = 'scenario_id;avaliador;protocolo;nota_protocolo;nota_seguranca;nota_precisao;nota_clareza;timestamp\n';
+
+      auditorias.forEach(item => {
+        csv += [
+          item.scenario_id,
+          item.avaliador,
+          item.protocolo,
+          item.nota_protocolo,
+          item.nota_seguranca,
+          item.nota_precisao,
+          item.nota_clareza,
+          item.timestamp
+        ].join(';') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `verena_audit_kappa_${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+
+      showToast('CSV exportado com sucesso!');
+    });
+
+    const toggleBtn = document.getElementById('toggleInstructions');
+    const instructionsContent = document.querySelector('.instructions-content');
+
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+      instructionsContent.classList.toggle('collapsed');
+      toggleBtn.querySelector('span').textContent = isExpanded ? 'Ver Instruções' : 'Recolher Instruções';
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          await navigator.serviceWorker.register('./sw.js');
+        } catch (error) {
+          console.error('Erro ao registrar service worker:', error);
+        }
+      });
+    }
+
+    renderList(getCenarios());
+    renderAuditorias();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

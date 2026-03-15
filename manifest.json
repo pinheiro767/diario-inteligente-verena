@@ -1,0 +1,21 @@
+{
+  "name": "Diário Inteligente Verena",
+  "short_name": "Verena",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "PWA para registro de cenários clínicos e auditoria Likert do Projeto Verena",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
