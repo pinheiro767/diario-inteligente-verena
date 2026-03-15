@@ -1,11 +1,11 @@
 {
-  "name": "Diário Inteligente Verena",
+  "name": "Verena Audit",
   "short_name": "Verena",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "description": "PWA para registro de cenários clínicos e auditoria Likert do Projeto Verena",
+  "description": "Auditoria clínica do Projeto Verena com cenários, protocolo, auditoria Likert e cálculo de Kappa.",
   "icons": [
     {
       "src": "./icons/icon-192.png",
