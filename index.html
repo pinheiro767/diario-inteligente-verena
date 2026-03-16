@@ -136,13 +136,6 @@
       border: 1px solid rgba(56,189,248,0.18);
     }
 
-    .section-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      margin: 0 0 0.75rem;
-    }
-
     .small-text {
       color: var(--text-muted);
       font-size: 0.92rem;
@@ -280,7 +273,8 @@
 
     .btn-primary,
     .btn-secondary,
-    .btn-success {
+    .btn-success,
+    .btn-mini {
       border: none;
       border-radius: 12px;
       padding: 0.8rem 1rem;
@@ -292,6 +286,7 @@
       justify-content: center;
       gap: 0.55rem;
       transition: transform 0.1s, opacity 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
     }
 
     .btn-primary {
@@ -301,6 +296,7 @@
     }
 
     .btn-primary:hover { background: #4f46e5; }
+
     .btn-success {
       width: 100%;
       color: #fff;
@@ -313,9 +309,23 @@
       border: 1px solid rgba(99,102,241,0.28);
     }
 
+    .btn-mini {
+      color: #fff;
+      background: rgba(52,211,153,0.14);
+      border: 1px solid rgba(52,211,153,0.25);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.82rem;
+      border-radius: 10px;
+    }
+
+    .btn-mini:hover {
+      background: rgba(52,211,153,0.22);
+    }
+
     .btn-primary:active,
     .btn-secondary:active,
-    .btn-success:active {
+    .btn-success:active,
+    .btn-mini:active {
       transform: scale(0.98);
     }
 
@@ -411,11 +421,20 @@
       font-size: 0.86rem;
       line-height: 1.45;
       margin-bottom: 0.3rem;
+      white-space: pre-wrap;
     }
 
     .task-date {
       color: #64748b;
       font-size: 0.75rem;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
     }
 
     .btn-delete {
@@ -575,6 +594,7 @@
       .likert-scale-horizontal { flex-direction: column; }
       .likert-endpoint { min-width: auto; }
       .task-item { flex-direction: column; }
+      .task-actions { justify-content: flex-start; }
     }
   </style>
 </head>
@@ -643,13 +663,21 @@
           <div class="step-box">
             <div class="step-number">5</div>
             <div class="step-content">
+              <h4>Trocar perguntas entre avaliadores</h4>
+              <p>Depois de criar as perguntas, cada aluno exporta seu CSV e importa o CSV do outro, para que ambos tenham os mesmos cenários.</p>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div class="step-number">6</div>
+            <div class="step-content">
               <h4>Avaliar a resposta</h4>
               <p>Duda e Luka devem avaliar a resposta usando os mesmos critérios técnicos, mas de forma independente.</p>
             </div>
           </div>
 
           <div class="step-box">
-            <div class="step-number">6</div>
+            <div class="step-number">7</div>
             <div class="step-content">
               <h4>Calcular o Kappa</h4>
               <p>Depois que os dois tiverem avaliado o mesmo cenário, o sistema calcula a concordância entre os avaliadores.</p>
@@ -805,11 +833,19 @@
 
         <div class="count-bar">
           <span class="count-pill" id="contador">0 / 999</span>
+
           <div class="toolbar">
             <button type="button" class="btn-secondary" id="exportScenariosBtn">
               <i data-lucide="download" style="width:14px;height:14px;"></i>
               <span>Exportar Perguntas</span>
             </button>
+
+            <label for="importScenariosInput" class="btn-secondary" style="cursor:pointer;">
+              <i data-lucide="upload" style="width:14px;height:14px;"></i>
+              <span>Importar Perguntas</span>
+            </label>
+
+            <input type="file" id="importScenariosInput" accept=".csv,text/csv" style="display:none;">
           </div>
         </div>
 
@@ -963,8 +999,8 @@
         </div>
 
         <div class="formula-box" style="margin-bottom:1rem;">
-          O aplicativo utiliza <strong>Kappa ponderado</strong> para escala Likert de 1 a 5.  
-          Interpretação aproximada:
+          O aplicativo utiliza <strong>Kappa ponderado</strong> para escala Likert de 1 a 5.
+          <br>Interpretação aproximada:
           <br>0–0,20 = leve
           <br>0,21–0,40 = razoável
           <br>0,41–0,60 = moderada
@@ -1012,6 +1048,8 @@
 
     const toast = document.getElementById("toast");
     const toastMsg = document.getElementById("toastMsg");
+
+    const importScenariosInput = document.getElementById("importScenariosInput");
 
     function getCenarios() {
       return JSON.parse(localStorage.getItem(STORAGE_KEYS.cenarios) || "[]");
@@ -1070,14 +1108,23 @@
           <div class="task-icon">
             <i data-lucide="file-question" style="width:16px;height:16px;"></i>
           </div>
+
           <div class="task-info">
             <div class="task-title">${escapeHTML(item.scenario_id)} — ${escapeHTML(item.titulo)}</div>
-            <div class="task-prompt"><strong>Tema:</strong> ${escapeHTML(item.tema)}<br>${escapeHTML(item.prompt)}</div>
+            <div class="task-prompt"><strong>Tema:</strong> ${escapeHTML(item.tema)}\n${escapeHTML(item.prompt)}</div>
             <div class="task-date">${escapeHTML(item.data)}</div>
           </div>
-          <button class="btn-delete" onclick="deleteCenario('${item.id}')" aria-label="Excluir cenário">
-            <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-          </button>
+
+          <div class="task-actions">
+            <button class="btn-mini" onclick="avaliarCenario('${escapeHTML(item.scenario_id)}')" type="button">
+              <i data-lucide="check-check" style="width:14px;height:14px;"></i>
+              <span>Avaliar</span>
+            </button>
+
+            <button class="btn-delete" onclick="deleteCenario('${item.id}')" aria-label="Excluir cenário" type="button">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
         </div>
       `).join("");
 
@@ -1133,6 +1180,12 @@
       saveCenarios(cenarios);
       renderCenarios();
       showToast("Pergunta excluída.");
+    }
+
+    function avaliarCenario(scenarioId) {
+      document.getElementById("auditScenarioId").value = scenarioId;
+      document.getElementById("auditCard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      showToast(`Cenário ${scenarioId} selecionado para auditoria.`);
     }
 
     function getPairsByField(field) {
@@ -1259,6 +1312,121 @@
 
       lucide.createIcons();
     }
+
+    function parseCsvLine(line) {
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"' && inQuotes && next === '"') {
+          current += '"';
+          i++;
+        } else if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ";" && !inQuotes) {
+          result.push(current);
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      result.push(current);
+      return result;
+    }
+
+    function normalizeHeader(value) {
+      return (value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    importScenariosInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
+
+        if (lines.length < 2) {
+          showToast("Arquivo CSV vazio ou inválido.", true);
+          event.target.value = "";
+          return;
+        }
+
+        const header = parseCsvLine(lines[0]).map(normalizeHeader);
+
+        const scenarioIdIndex = header.indexOf("scenario_id");
+        const temaIndex = header.indexOf("tema");
+        const tituloIndex = header.indexOf("titulo");
+        const promptIndex = header.indexOf("prompt");
+        const dataIndex = header.indexOf("data");
+
+        if (
+          scenarioIdIndex === -1 ||
+          temaIndex === -1 ||
+          tituloIndex === -1 ||
+          promptIndex === -1
+        ) {
+          showToast("CSV de perguntas inválido.", true);
+          event.target.value = "";
+          return;
+        }
+
+        const existing = getCenarios();
+        const existingIds = new Set(
+          existing.map(item => (item.scenario_id || "").trim().toLowerCase())
+        );
+
+        let importedCount = 0;
+
+        for (let i = 1; i < lines.length; i++) {
+          const cols = parseCsvLine(lines[i]);
+
+          const scenario_id = (cols[scenarioIdIndex] || "").trim();
+          const tema = (cols[temaIndex] || "").trim();
+          const titulo = (cols[tituloIndex] || "").trim();
+          const prompt = (cols[promptIndex] || "").trim();
+          const data = (cols[dataIndex] || "").trim() || new Date().toLocaleDateString("pt-BR");
+
+          if (!scenario_id || !titulo || !prompt) continue;
+          if (existingIds.has(scenario_id.toLowerCase())) continue;
+
+          existing.push({
+            id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + i),
+            scenario_id,
+            tema,
+            titulo,
+            prompt,
+            data
+          });
+
+          existingIds.add(scenario_id.toLowerCase());
+          importedCount++;
+        }
+
+        saveCenarios(existing);
+        renderCenarios();
+
+        if (importedCount === 0) {
+          showToast("Nenhuma pergunta nova foi importada.", true);
+        } else {
+          showToast(`${importedCount} pergunta(s) importada(s) com sucesso.`);
+        }
+      } catch (error) {
+        console.error(error);
+        showToast("Erro ao importar o CSV.", true);
+      }
+
+      event.target.value = "";
+    });
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -1434,19 +1602,6 @@
       showToast("Kappa calculado.");
     });
 
-    const toggleBtn = document.getElementById("toggleInstructions");
-    const instructionsContent = document.querySelector(".steps-grid")?.parentElement?.querySelector(".steps-grid");
-
-    toggleBtn?.addEventListener("click", () => {
-      const section = document.querySelector(".steps-grid");
-      const expanded = toggleBtn.getAttribute("aria-expanded") === "true";
-      toggleBtn.setAttribute("aria-expanded", String(!expanded));
-      if (section) {
-        section.style.display = expanded ? "none" : "grid";
-      }
-      toggleBtn.querySelector("span").textContent = expanded ? "Mostrar Passo a Passo" : "Recolher Instruções";
-    });
-
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", async () => {
         try {
@@ -1463,4 +1618,4 @@
     lucide.createIcons();
   </script>
 </body>
-  </html>
+</html>
